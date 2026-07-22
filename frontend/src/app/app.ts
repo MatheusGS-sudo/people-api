@@ -77,7 +77,7 @@ export class App implements OnInit {
   });
 
   readonly loginForm = this.formBuilder.nonNullable.group({
-    username: ['admin', [Validators.required]],
+    username: ['', [Validators.required]],
 
     password: ['', [Validators.required]],
   });
