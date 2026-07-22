@@ -42,72 +42,92 @@ public class SecurityConfig {
                 .build();
         return new InMemoryUserDetailsManager(admin);
     }
-    @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http
-    ) throws Exception {
-        return http
-                .csrf(csrf ->
-                        csrf.disable()
-                )
-                .cors(Customizer.withDefaults())
-                .headers(headers ->
-                        headers.frameOptions(frame ->
-                                frame.sameOrigin()
-                        )
-                )
-                .authorizeHttpRequests(authorize ->
-                        authorize
-                                .requestMatchers(
-                                        "/h2-console/**"
-                                )
-                                .permitAll()
+@Bean
+public SecurityFilterChain securityFilterChain(
+    HttpSecurity http
+) throws Exception {
 
-                                .requestMatchers(
-                                        HttpMethod.DELETE,
-                                        "/list/**"
-                                )
-                                .authenticated()
+    return http
 
-                                .anyRequest()
-                                .permitAll()
-                )
-                .httpBasic(Customizer.withDefaults())
-                .build();
-    }
-    @Bean
-    public CorsConfigurationSource
-    corsConfigurationSource() {
-        CorsConfiguration configuration =
-                new CorsConfiguration();
+        .csrf(csrf ->
+            csrf.disable()
+        )
 
-        configuration.setAllowedOrigins(
-                List.of(
-                        "http://localhost:4200",
-                        "http://localhost:8080"
+        .cors(Customizer.withDefaults())
+
+        .headers(headers ->
+            headers.frameOptions(frame ->
+                frame.sameOrigin()
+            )
+        )
+
+        .authorizeHttpRequests(authorize ->
+            authorize
+
+                .requestMatchers(
+                    "/h2-console/**"
                 )
-        );
-        configuration.setAllowedMethods(
-                List.of(
-                        "GET",
-                        "POST",
-                        "DELETE",
-                        "OPTIONS"
+                .permitAll()
+
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/auth/check"
                 )
-        );
-        configuration.setAllowedHeaders(
-                List.of(
-                        "Authorization",
-                        "Content-Type"
+                .authenticated()
+
+                .requestMatchers(
+                    HttpMethod.DELETE,
+                    "/list/**"
                 )
-        );
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration(
-                "/**",
-                configuration
-        );
-        return source;
-    }
+                .authenticated()
+
+                .anyRequest()
+                .permitAll()
+        )
+
+        .httpBasic(Customizer.withDefaults())
+
+        .build();
+}
+@Bean
+public CorsConfigurationSource corsConfigurationSource() {
+
+    CorsConfiguration configuration =
+        new CorsConfiguration();
+
+    configuration.setAllowedOrigins(
+        List.of(
+            "http://localhost:4200",
+            "http://localhost:8080"
+        )
+    );
+
+    configuration.setAllowedMethods(
+        List.of(
+            "GET",
+            "POST",
+            "DELETE",
+            "OPTIONS"
+        )
+    );
+
+    configuration.setAllowedHeaders(
+        List.of(
+            "Authorization",
+            "Content-Type"
+        )
+    );
+
+    configuration.setAllowCredentials(true);
+
+    UrlBasedCorsConfigurationSource source =
+        new UrlBasedCorsConfigurationSource();
+
+    source.registerCorsConfiguration(
+        "/**",
+        configuration
+    );
+
+    return source;
+}
 }

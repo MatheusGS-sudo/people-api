@@ -1,0 +1,20 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+  background: #ffffff;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: #ffffff;
+  color: #111111;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}

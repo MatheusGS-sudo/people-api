@@ -1,0 +1,461 @@
+<div class="government-bar">
+  <div class="container government-content">
+    <span class="government-name"> Governo do Estado de São Paulo </span>
+
+    <span class="accessibility"> Acessibilidade </span>
+  </div>
+</div>
+
+<header class="main-header">
+  <div class="container header-content">
+    <button
+      class="header-logos"
+      type="button"
+      aria-label="Voltar ao início"
+      (click)="scrollTo('inicio')"
+    >
+      <img
+        class="header-logo header-logo-sp"
+        src="images/brasao.png"
+        alt="Governo do Estado de São Paulo"
+      />
+
+      <span class="logo-divider" aria-hidden="true"></span>
+
+      <img
+        class="header-logo header-logo-company"
+        src="images/quipux_logo.jpg"
+        alt="Nome da empresa responsável pelo teste"
+      />
+    </button>
+
+    <nav class="navigation">
+      <button type="button" (click)="scrollTo('cadastro')">Cadastrar pessoa</button>
+
+      <button type="button" (click)="scrollTo('pessoas')">Pessoas cadastradas</button>
+    </nav>
+
+    <div class="authentication-area">
+      @if (authService.isAuthenticated()) {
+        <div class="logged-user">
+          <span class="user-avatar">
+            {{ authService.currentUsername()?.charAt(0)?.toUpperCase() }}
+          </span>
+
+          <span>
+            {{ authService.currentUsername() }}
+          </span>
+        </div>
+
+        <button class="button button-outline" type="button" (click)="logout()">Sair</button>
+      } @else {
+        <button class="button button-login" type="button" (click)="openLogin()"><i class="fa-solid fa-user"></i> Entrar com o gov.br</button>
+      }
+    </div>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero">
+    <div class="container">
+      <span class="hero-label"> Serviços digitais </span>
+
+      <h1>O que você procura?</h1>
+
+      <p>Cadastre, consulte e gerencie pessoas em um único lugar.</p>
+
+      <div class="search-box">
+        <span class="search-icon"> ⌕ </span>
+
+        <input
+          type="search"
+          placeholder="Busque por nome, documento ou e-mail"
+          (input)="updateSearch($event)"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="services-section">
+    <div class="container">
+      <h2 class="section-title">Serviços mais acessados</h2>
+
+      <div class="services-grid">
+        <button class="service-card" type="button" (click)="scrollTo('cadastro')">
+          <span class="service-icon"> 01 </span>
+
+          <span class="service-content">
+            <strong>Cadastrar pessoa</strong>
+            <small> Adicione documento, nome, sobrenome e e-mail. </small>
+          </span>
+
+          <span class="service-arrow"> → </span>
+        </button>
+
+        <button class="service-card" type="button" (click)="scrollTo('pessoas')">
+          <span class="service-icon"> 02 </span>
+
+          <span class="service-content">
+            <strong>Consultar pessoas</strong>
+            <small> Visualize os registros armazenados no sistema. </small>
+          </span>
+
+          <span class="service-arrow"> → </span>
+        </button>
+
+        <button class="service-card" type="button" (click)="scrollTo('pessoas')">
+          <span class="service-icon"> 03 </span>
+
+          <span class="service-content">
+            <strong>Consultar nacionalidade</strong>
+            <small> Consulte a previsão utilizando a Nationalize API. </small>
+          </span>
+
+          <span class="service-arrow"> → </span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="container content-container">
+    @if (successMessage()) {
+      <div class="alert alert-success">
+        {{ successMessage() }}
+      </div>
+    }
+
+    @if (errorMessage()) {
+      <div class="alert alert-error">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <section id="cadastro" class="content-section">
+      <div class="section-heading">
+        <span>Cadastro</span>
+
+        <h2>Registrar uma pessoa</h2>
+
+        <p>Preencha os campos abaixo para realizar um novo cadastro.</p>
+      </div>
+
+      <div class="form-card">
+        <form class="registration-form" [formGroup]="personForm" (ngSubmit)="registerPerson()">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="documento"> Documento </label>
+
+              <input
+                id="documento"
+                type="text"
+                maxlength="11"
+                formControlName="documento"
+                placeholder="Informe 11 números"
+              />
+
+              @if (personForm.controls.documento.touched && personForm.controls.documento.invalid) {
+                <small class="field-error"> Informe exatamente 11 números. </small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="nome"> Nome </label>
+
+              <input id="nome" type="text" formControlName="nome" placeholder="Informe o nome" />
+
+              @if (personForm.controls.nome.touched && personForm.controls.nome.invalid) {
+                <small class="field-error"> Informe um nome válido. </small>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="sobrenome"> Sobrenome </label>
+
+              <input
+                id="sobrenome"
+                type="text"
+                formControlName="sobrenome"
+                placeholder="Informe o sobrenome"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="email"> E-mail </label>
+
+              <input id="email" type="email" formControlName="email" placeholder="nome@email.com" />
+
+              @if (personForm.controls.email.touched && personForm.controls.email.invalid) {
+                <small class="field-error"> Informe um e-mail válido. </small>
+              }
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="button button-primary" type="submit" [disabled]="isSubmitting()">
+              @if (isSubmitting()) {
+                Cadastrando...
+              } @else {
+                Cadastrar pessoa
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="pessoas" class="content-section">
+      <div class="list-heading">
+        <div class="section-heading">
+          <span>Consulta</span>
+
+          <h2>Pessoas cadastradas</h2>
+
+          <p>Consulte a nacionalidade ou exclua registros autenticados.</p>
+        </div>
+
+        <button
+          class="button button-outline"
+          type="button"
+          (click)="loadPeople()"
+          [disabled]="isLoadingList()"
+        >
+          Atualizar
+        </button>
+      </div>
+
+      <div class="people-card">
+        @if (isLoadingList()) {
+          <div class="empty-state">Carregando registros...</div>
+        } @else if (filteredPeople().length === 0) {
+          <div class="empty-state">
+            <strong> Nenhuma pessoa encontrada </strong>
+
+            <span> Cadastre uma pessoa ou altere o texto da busca. </span>
+          </div>
+        } @else {
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Documento</th>
+                  <th>Nome completo</th>
+                  <th>E-mail</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (person of filteredPeople(); track person.id) {
+                  <tr>
+                    <td>
+                      <span class="id-label">
+                        {{ person.id }}
+                      </span>
+                    </td>
+
+                    <td>
+                      {{ person.documento }}
+                    </td>
+
+                    <td>
+                      <strong>
+                        {{ person.nome }}
+                        {{ person.sobrenome }}
+                      </strong>
+                    </td>
+
+                    <td>
+                      {{ person.email }}
+                    </td>
+
+                    <td>
+                      <div class="row-actions">
+                        <button
+                          class="action-link"
+                          type="button"
+                          (click)="findNationality(person)"
+                          [disabled]="activePersonId() === person.id"
+                        >
+                          Nacionalidade
+                        </button>
+
+                        <button
+                          class="action-link delete-link"
+                          type="button"
+                          (click)="requestDelete(person)"
+                          [disabled]="activePersonId() === person.id"
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </section>
+
+    @if (selectedNationality(); as nationality) {
+      <section class="nationality-panel">
+        <div class="country-code">
+          {{ nationality.codigoPais }}
+        </div>
+
+        <div>
+          <span class="result-label"> Resultado da consulta </span>
+
+          <h2>
+            {{ nationality.nacionalidade }}
+          </h2>
+
+          <p>
+            O nome
+            <strong>{{ nationality.nome }}</strong>
+            possui probabilidade de
+            <strong>
+              {{ formatProbability(nationality.probabilidade) }}
+            </strong>
+            de estar relacionado a essa nacionalidade.
+          </p>
+
+          @if (nationality.quantidadeAmostras !== undefined) {
+            <small>
+              Base da previsão:
+              {{ nationality.quantidadeAmostras }}
+              amostras.
+            </small>
+          }
+        </div>
+      </section>
+    }
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div>
+      <strong> Pessoas SP </strong>
+
+      <p>Aplicação desenvolvida para avaliação técnica.</p>
+    </div>
+
+    <p>Projeto demonstrativo, sem vínculo com o Governo do Estado.</p>
+  </div>
+</footer>
+
+@if (showLoginModal()) {
+  <div class="modal-backdrop" (click)="closeLogin()">
+    <section
+      class="login-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="login-title"
+      (click)="$event.stopPropagation()"
+    >
+      <button class="close-button" type="button" aria-label="Fechar" (click)="closeLogin()">
+        ×
+      </button>
+
+      <span class="login-label"> Área autenticada </span>
+
+      <h2 id="login-title">Entrar no sistema</h2>
+
+      <p>Faça login para executar operações protegidas, como excluir pessoas.</p>
+
+      <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+        <div class="form-field">
+          <label for="login-username"> Usuário </label>
+
+          <input
+            id="login-username"
+            type="text"
+            formControlName="username"
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="login-password"> Senha </label>
+
+          <input
+            id="login-password"
+            type="password"
+            formControlName="password"
+            autocomplete="current-password"
+            placeholder="Digite sua senha"
+          />
+        </div>
+
+        <button class="button button-primary button-full" type="submit" [disabled]="isLoggingIn()">
+          @if (isLoggingIn()) {
+            Entrando...
+          } @else {
+            Entrar
+          }
+        </button>
+      </form>
+    </section>
+  </div>
+}
+@if (showDeleteModal()) {
+  @if (pendingDeletePerson(); as person) {
+    <div class="modal-backdrop" (click)="cancelDelete()">
+      <section
+        class="login-modal delete-modal"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="delete-title"
+        aria-describedby="delete-description"
+        (click)="$event.stopPropagation()"
+      >
+        <button class="close-button" type="button" aria-label="Fechar" (click)="cancelDelete()">
+          ×
+        </button>
+
+        <span class="login-label"> Confirmação </span>
+
+        <h2 id="delete-title">Excluir pessoa?</h2>
+
+        <p id="delete-description">Você está prestes a excluir permanentemente o cadastro de:</p>
+
+        <div class="delete-person-information">
+          <strong> {{ person.nome }} {{ person.sobrenome }} </strong>
+
+          <span> Documento: {{ person.documento }} </span>
+
+          <span> E-mail: {{ person.email }} </span>
+        </div>
+
+        <p class="delete-warning-text">Essa operação não poderá ser desfeita.</p>
+
+        <div class="delete-modal-actions">
+          <button
+            class="button button-outline"
+            type="button"
+            (click)="cancelDelete()"
+            [disabled]="activePersonId() === person.id"
+          >
+            Cancelar
+          </button>
+
+          <button
+            class="button button-danger"
+            type="button"
+            (click)="confirmDelete()"
+            [disabled]="activePersonId() === person.id"
+          >
+            @if (activePersonId() === person.id) {
+              Excluindo...
+            } @else {
+              Sim, excluir
+            }
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+}
