@@ -1,59 +1,201 @@
-# Frontend
+# People API
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.19.
+Aplicação desenvolvida para avaliação técnica, composta por:
 
-## Development server
+- **Backend:** Java com Spring Boot
+- **Frontend:** Angular
+- **Banco de dados:** H2 em memória
+- **API externa:** Nationalize API
+- **Autenticação:** HTTP Basic para operações protegidas
 
-To start a local development server, run:
+## Funcionalidades
 
-```bash
-ng serve
+- Cadastrar pessoas
+- Listar pessoas cadastradas
+- Buscar uma pessoa pelo ID
+- Consultar uma possível nacionalidade pelo nome
+- Autenticar um usuário
+- Excluir uma pessoa autenticada
+- Acessar o banco em memória pelo H2 Console
+
+
+## Pré-requisitos
+
+Antes de executar a aplicação, instale:
+
+- Java 21
+- Node.js e npm
+- Git, caso o projeto seja obtido pelo GitHub
+
+O Maven não precisa estar instalado globalmente quando os arquivos `mvnw` e `mvnw.cmd` estiverem presentes.
+
+Também verifique se estas portas estão livres:
+
+- Backend: `8080`
+- Frontend: `4200`
+
+## Executar no Windows
+
+Coloque o arquivo `iniciar-windows.bat` na raiz do projeto e execute com dois cliques.
+
+Também é possível executar pelo PowerShell:
+
+```powershell
+.\iniciar-windows.bat
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+O script:
 
-## Code scaffolding
+1. Verifica se Java e npm estão instalados.
+2. Instala as dependências do Angular quando `frontend/node_modules` não existir.
+3. Abre o backend em uma janela.
+4. Abre o frontend em outra janela.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Executar no Linux
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Primeiro, dê permissão de execução:
 
 ```bash
-ng build
+chmod +x iniciar-linux.sh
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Depois execute:
 
 ```bash
-ng test
+./iniciar-linux.sh
 ```
 
-## Running end-to-end tests
+O backend e o frontend serão executados no mesmo terminal. Para encerrar os dois processos, pressione `Ctrl + C`.
 
-For end-to-end (e2e) testing, run:
+## Executar manualmente
+
+### Backend no Windows
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+### Backend no Linux
 
 ```bash
-ng e2e
+./mvnw spring-boot:run
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Caso o projeto não possua o Maven Wrapper:
 
-## Additional Resources
+```bash
+mvn spring-boot:run
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Frontend
+
+Abra outro terminal:
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+## Endereços da aplicação
+
+Depois de iniciar os serviços:
+
+- Frontend: `http://localhost:4200`
+- Backend: `http://localhost:8080`
+- H2 Console: `http://localhost:8080/h2-console`
+
+Para acessar o H2 Console, utilize os dados definidos em:
+
+```text
+src/main/resources/application.properties
+```
+
+## Endpoints principais
+
+| Método | Endpoint | Descrição | Autenticação |
+|---|---|---|---|
+| POST | `/registrarName` | Cadastra uma pessoa | Não |
+| GET | `/list` | Lista as pessoas | Não |
+| GET | `/list/{id}` | Busca uma pessoa pelo ID | Não |
+| GET | `/findNacionalityByPerson/{id}` | Consulta a nacionalidade | Não |
+| GET | `/auth/check` | Valida as credenciais | Sim |
+| DELETE | `/list/{id}` | Exclui uma pessoa | Sim |
+
+## Exemplo de cadastro
+
+```http
+POST http://localhost:8080/registrarName
+Content-Type: application/json
+```
+
+```json
+{
+  "documento": "12345678901",
+  "nome": "Matheus",
+  "sobrenome": "Silva",
+  "email": "matheus@email.com"
+}
+```
+
+## Autenticação de demonstração
+
+```text
+Usuário: admin
+Senha: admin123
+```
+
+A exclusão de registros exige autenticação. O frontend solicita o login e envia o cabeçalho HTTP Basic ao backend.
+
+
+## Banco H2
+
+O banco H2 está configurado em memória. Isso significa que os registros podem ser apagados quando o backend for encerrado ou reiniciado.
+
+## Problemas comuns
+
+### O frontend informa que não conseguiu acessar o backend
+
+Confira:
+
+- Se o Spring Boot está rodando na porta `8080`
+- Se o frontend está acessando `http://localhost:8080`
+- Se o CORS permite `http://localhost:4200`
+- Se não existe outro programa utilizando a porta `8080`
+
+### A porta já está em uso
+
+No Windows:
+
+```powershell
+netstat -ano | findstr :8080
+netstat -ano | findstr :4200
+```
+
+No Linux:
+
+```bash
+ss -ltnp | grep 8080
+ss -ltnp | grep 4200
+```
+
+### `npm` não foi encontrado
+
+```bash
+node --version
+npm --version
+```
+
+### Versão incorreta do Java
+
+```bash
+java --version
+```
+
+O projeto está configurado para Java 21.
+
+## Encerramento
+
+No Windows, feche as duas janelas abertas pelo arquivo `.bat`.
+
+No Linux, pressione `Ctrl + C` no terminal em que o arquivo `.sh` está sendo executado.
