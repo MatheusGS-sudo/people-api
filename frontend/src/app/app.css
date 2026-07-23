@@ -44,11 +44,6 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-
-.accessibility {
-  color: #dedede;
-}
-
 .main-header {
   position: sticky;
   z-index: 20;
