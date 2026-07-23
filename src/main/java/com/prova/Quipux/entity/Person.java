@@ -1,4 +1,4 @@
-package com.prova.Quipux.entity;
+package com.prova.quipux.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

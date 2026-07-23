@@ -1,11 +1,11 @@
-package com.prova.Quipux.service;
+package com.prova.quipux.service;
 
-import com.prova.Quipux.dto.PersonRequest;
-import com.prova.Quipux.dto.PersonResponse;
-import com.prova.Quipux.entity.Person;
-import com.prova.Quipux.exception.DuplicateResourceException;
-import com.prova.Quipux.exception.PersonNotFoundException;
-import com.prova.Quipux.repository.PersonRepository;
+import com.prova.quipux.dto.PersonRequest;
+import com.prova.quipux.dto.PersonResponse;
+import com.prova.quipux.entity.Person;
+import com.prova.quipux.exception.DuplicateResourceException;
+import com.prova.quipux.exception.PersonNotFoundException;
+import com.prova.quipux.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Sort;

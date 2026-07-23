@@ -1,6 +1,6 @@
-package com.prova.Quipux.exception;
+package com.prova.quipux.exception;
 
-import com.prova.Quipux.dto.ApiError;
+import com.prova.quipux.dto.ApiError;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 

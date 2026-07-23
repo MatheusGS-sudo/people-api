@@ -1,4 +1,4 @@
-package com.prova.Quipux.dto;
+package com.prova.quipux.dto;
 
 import java.time.Instant;
 import java.util.Map;

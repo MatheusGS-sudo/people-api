@@ -1,4 +1,4 @@
-package com.prova.Quipux;
+package com.prova.quipux;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

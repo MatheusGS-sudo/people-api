@@ -1,10 +1,10 @@
-package com.prova.Quipux.controller;
+package com.prova.quipux.controller;
 
-import com.prova.Quipux.dto.NationalityResponse;
-import com.prova.Quipux.dto.PersonRequest;
-import com.prova.Quipux.dto.PersonResponse;
-import com.prova.Quipux.service.NationalityService;
-import com.prova.Quipux.service.PersonService;
+import com.prova.quipux.dto.NationalityResponse;
+import com.prova.quipux.dto.PersonRequest;
+import com.prova.quipux.dto.PersonResponse;
+import com.prova.quipux.service.NationalityService;
+import com.prova.quipux.service.PersonService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;

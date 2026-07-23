@@ -1,4 +1,4 @@
-package com.prova.Quipux.exception;
+package com.prova.quipux.exception;
 
 public class PersonNotFoundException extends RuntimeException {
     public PersonNotFoundException(Long id) {

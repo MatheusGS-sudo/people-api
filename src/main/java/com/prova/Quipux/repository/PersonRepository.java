@@ -1,6 +1,6 @@
-package com.prova.Quipux.repository;
+package com.prova.quipux.repository;
 
-import com.prova.Quipux.entity.Person;
+import com.prova.quipux.entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PersonRepository extends JpaRepository<Person, Long> {

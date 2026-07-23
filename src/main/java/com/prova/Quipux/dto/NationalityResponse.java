@@ -1,4 +1,4 @@
-package com.prova.Quipux.dto;
+package com.prova.quipux.dto;
 
 public record NationalityResponse(
         Long pessoaId,

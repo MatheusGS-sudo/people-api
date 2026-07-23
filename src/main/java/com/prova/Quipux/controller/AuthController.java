@@ -1,4 +1,4 @@
-package com.prova.Quipux.controller;
+package com.prova.quipux.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;

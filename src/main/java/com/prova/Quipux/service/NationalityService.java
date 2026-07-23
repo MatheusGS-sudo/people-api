@@ -1,9 +1,9 @@
-package com.prova.Quipux.service;
+package com.prova.quipux.service;
 
-import com.prova.Quipux.dto.NationalityResponse;
-import com.prova.Quipux.dto.NationalizeApiResponse;
-import com.prova.Quipux.entity.Person;
-import com.prova.Quipux.exception.ExternalServiceException;
+import com.prova.quipux.dto.NationalityResponse;
+import com.prova.quipux.dto.NationalizeApiResponse;
+import com.prova.quipux.entity.Person;
+import com.prova.quipux.exception.ExternalServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
